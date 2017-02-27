@@ -1,6 +1,10 @@
 .data
 .balign 4
+printHex: .asciz "%08X\n"
+.balign 4
 printd : .asciz "%d\n" 
+.balign 4
+scand : .asciz "%d" 
 .balign 4
 stringd: .asciz "%s"
 .balign 4
@@ -11,6 +15,23 @@ print_int:
 	push {fp,lr}
 	mov r1, r0
 	ldr r0, =printd
+	bl printf
+	pop {fp,pc}
+.global read_int
+read_int:
+	push {fp,lr}
+	sub sp, sp, #4
+	mov r1, sp
+	ldr r0, =scand
+	bl scanf
+	ldr r0, [sp]
+	add sp, sp, #4
+	pop {fp,pc}
+.global print_hex
+print_hex:
+	push {fp,lr}
+	mov r1, r0
+	ldr r0, =printHex
 	bl printf
 	pop {fp,pc}
 .global print_string
